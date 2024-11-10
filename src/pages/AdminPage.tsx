@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Layout, Menu, Button, Form, Input, Modal, Typography, List, message } from 'antd';
-import { PlusOutlined, MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons';
+import { Layout, Menu, Button, Form, Input, Modal, Typography, message, Row, Col, Card } from 'antd';
+import { PlusOutlined, MenuUnfoldOutlined, MenuFoldOutlined, FileDoneOutlined, FolderOpenOutlined } from '@ant-design/icons';
 
 const { Header, Sider, Content } = Layout;
 const { Title } = Typography;
@@ -22,6 +22,7 @@ const AdminPage: React.FC = () => {
     const [pollTitle, setPollTitle] = useState('');
     const [questions, setQuestions] = useState<Question[]>([]);
     const [polls, setPolls] = useState<any[]>([]); // Stores created polls
+    const [view, setView] = useState('active');
 
     const toggleCollapse = () => {
         setCollapsed(!collapsed);
@@ -57,13 +58,13 @@ const AdminPage: React.FC = () => {
         }
 
         // Validate at least one question
-        if (questions.length === 0) {
+        if (questions.length === 0 || questions.every(q => q.label.trim() === '')) {
             return message.error('At least one question is required to create a poll.');
         }
 
         // Validate each question has at least two options
         for (const question of questions) {
-            if (question.options.length < 2) {
+            if (question.options.filter(opt => opt.value.trim()).length < 2) {
                 return message.error('Each question must have at least two options.');
             }
         }
@@ -88,13 +89,27 @@ const AdminPage: React.FC = () => {
                 <Button
                     type="primary"
                     icon={<PlusOutlined />}
-                    style={{ margin: '16px' }}
                     onClick={showAddPollModal}
+                    className='add-btn'
                 >
                     {!collapsed && "Add Poll"}
                 </Button>
-                <Menu mode="inline" theme="dark">
-                    {/* Placeholder for additional menu items */}
+                
+                <Menu mode="inline" theme="dark" defaultSelectedKeys={['active']}>
+                    <Menu.Item
+                        key="active"
+                        icon={<FileDoneOutlined />}
+                        onClick={() => setView('active')}
+                    >
+                        {!collapsed && "Active Polls"}
+                    </Menu.Item>
+                    <Menu.Item
+                        key="closed"
+                        icon={<FolderOpenOutlined />}
+                        onClick={() => setView('closed')}
+                    >
+                        {!collapsed && "Closed Polls"}
+                    </Menu.Item>
                 </Menu>
             </Sider>
 
@@ -108,21 +123,30 @@ const AdminPage: React.FC = () => {
                     <Title level={3} className='admin-title'>Admin Dashboard</Title>
                 </Header>
 
-                <Content className='talent-poll-bg' style={{ margin: '5px' }}>
-                    <List
-                        header={<Title level={4}>Active Polls</Title>}
-                        bordered
-                        dataSource={polls.filter(p => p.isOpen)}
-                        renderItem={poll => (
-                            <List.Item
-                                actions={[
-                                    <Button type="link" onClick={() => closePoll(poll.id)}>Close Poll</Button>
-                                ]}
-                            >
-                                {poll.title}
-                            </List.Item>
-                        )}
-                    />
+                <Content className='talent-poll-bg' style={{ padding: '20px' }}>
+                    <Row gutter={[16, 16]}>
+                        {polls.filter(poll => (view === 'active' ? poll.isOpen : !poll.isOpen)).map((poll) => (
+                            <Col xs={24} sm={12} md={8} lg={6} key={poll.id}>
+                                <Card
+                                    title={poll.title}
+                                    extra={<Button type="link" onClick={() => closePoll(poll.id)}>Close Poll</Button>}
+                                    bordered={false}
+                                    style={{ width: '100%' }}
+                                >
+                                    {poll.questions.map((question: Question, qIndex: number) => (
+                                        <div key={question.id} style={{ marginBottom: '12px' }}>
+                                            <Title level={5}>{`Q${qIndex + 1}: ${question.label}`}</Title>
+                                            <ul>
+                                                {question.options.map((option: Option) => (
+                                                    <li key={option.id}>{option.value}</li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                    ))}
+                                </Card>
+                            </Col>
+                        ))}
+                    </Row>
                 </Content>
             </Layout>
 

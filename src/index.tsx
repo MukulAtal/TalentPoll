@@ -2,12 +2,13 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import LoginPage from './components/LoginPage';
+import LoginPage from './pages/LoginPage';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import About from './components/About';
-import RegisterPage from './components/RegisterPage';
+import RegisterPage from './pages/RegisterPage';
 import Home from './components/Home';
-import AdminPage from './components/AdminPage';
+import AdminPage from './pages/AdminPage';
+import AuthGuard from './components/Authguard';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -32,7 +33,11 @@ const appRouter = createBrowserRouter([
       },
       {
         path: "/admin",
-        element: <AdminPage />
+        element: (
+          <AuthGuard requiredRole="admin">
+            <AdminPage />
+          </AuthGuard>
+        )
       },
       {
         path: "/home",

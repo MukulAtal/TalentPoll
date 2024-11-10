@@ -1,12 +1,12 @@
-import RegisterForm from "../Forms/RegisterForm";
+import LoginForm from "../forms/LoginForm";
 
-const RegisterPage = () => {
+const LoginPage = () => {
     return (
         <div className="talent-poll-bg flex-1 center justify-center">
             <div className="login-page-content">Welcome to Talent Poll</div>
-            <RegisterForm /> 
+            <LoginForm /> 
         </div>
     );
 }
 
-export default RegisterPage;
+export default LoginPage;

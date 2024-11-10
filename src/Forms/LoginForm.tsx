@@ -18,6 +18,8 @@ const LoginForm: React.FC = () => {
         );
 
         if (user) {
+            localStorage.setItem("isAuthenticated", "true");
+            localStorage.setItem("role", user.role);
             message.success('Login successful!');
 
             // Navigate based on user role
