@@ -1,22 +1,30 @@
 import React from 'react';
-import { Layout, Menu } from 'antd';
+import { Button, Layout, Menu, Tooltip } from 'antd';
 import { MenuInfo } from 'rc-menu/lib/interface';
 import { useNavigate } from 'react-router-dom';
+import { LogoutOutlined } from '@ant-design/icons';
+import LandingPage from '../pages/LandingPage';
 
 const { Header } = Layout;
 
 const AppHeader: React.FC = () => {
     const navigate = useNavigate();
+    const isLoggedIn = Boolean(localStorage.getItem('isAuthenticated'));
 
     const handleMenuClick = (e: MenuInfo) => {
 
         switch (e.key) {
             case 'home':
-                navigate('/');
+                navigate(isLoggedIn ? LandingPage() : '/');
                 break;
             case 'about':
                 navigate('/about');
         }
+    };
+
+    const handleLogout = () => {
+        localStorage.removeItem('isAuthenticated');
+        navigate('/');
     };
 
     return (
@@ -33,6 +41,16 @@ const AppHeader: React.FC = () => {
                     { key: 'about', label: 'About' }
                 ]}
             />
+            {isLoggedIn && (
+                <Tooltip title="Log out">
+                    <Button
+                        onClick={handleLogout}
+                        icon={<LogoutOutlined />}
+                        type="link"
+                        className='ml-auto'
+                    />
+                </Tooltip>
+            )}
         </Header>
     );
 };

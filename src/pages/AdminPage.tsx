@@ -1,28 +1,29 @@
-import React, { useState } from 'react';
-import { Layout, Menu, Button, Form, Input, Modal, Typography, message, Row, Col, Card } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Layout, Menu, Button, Form, Input, Modal, Typography, message, Row } from 'antd';
 import { PlusOutlined, MenuUnfoldOutlined, MenuFoldOutlined, FileDoneOutlined, FolderOpenOutlined } from '@ant-design/icons';
+import PollList from '../utils/PollList';
+import Question from '../interfaces/Question';
+import Poll from '../interfaces/Poll';
 
 const { Header, Sider, Content } = Layout;
 const { Title } = Typography;
-
-interface Option {
-    id: number;
-    value: string;
-}
-
-interface Question {
-    id: number;
-    label: string;
-    options: Option[];
-}
 
 const AdminPage: React.FC = () => {
     const [collapsed, setCollapsed] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [pollTitle, setPollTitle] = useState('');
     const [questions, setQuestions] = useState<Question[]>([]);
-    const [polls, setPolls] = useState<any[]>([]); // Stores created polls
-    const [view, setView] = useState('active');
+    const [polls, setPolls] = useState<any[]>([]);
+    const [selectedPoll, setSelectedPoll] = useState<Poll | null>(null);
+    const [view, setView] = useState<'active' | 'closed'>('active');
+
+    // Load polls from local storage on component mount
+    useEffect(() => {
+        const savedPolls = localStorage.getItem('polls');
+        if (savedPolls) {
+            setPolls(JSON.parse(savedPolls));
+        }
+    }, []);
 
     const toggleCollapse = () => {
         setCollapsed(!collapsed);
@@ -114,7 +115,7 @@ const AdminPage: React.FC = () => {
             </Sider>
 
             <Layout className="site-layout">
-                <Header className='admin-header'>
+                <Header className='page-header'>
                     <Button
                         type="link"
                         icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
@@ -125,27 +126,7 @@ const AdminPage: React.FC = () => {
 
                 <Content className='talent-poll-bg' style={{ padding: '20px' }}>
                     <Row gutter={[16, 16]}>
-                        {polls.filter(poll => (view === 'active' ? poll.isOpen : !poll.isOpen)).map((poll) => (
-                            <Col xs={24} sm={12} md={8} lg={6} key={poll.id}>
-                                <Card
-                                    title={poll.title}
-                                    extra={<Button type="link" onClick={() => closePoll(poll.id)}>Close Poll</Button>}
-                                    bordered={false}
-                                    style={{ width: '100%' }}
-                                >
-                                    {poll.questions.map((question: Question, qIndex: number) => (
-                                        <div key={question.id} style={{ marginBottom: '12px' }}>
-                                            <Title level={5}>{`Q${qIndex + 1}: ${question.label}`}</Title>
-                                            <ul>
-                                                {question.options.map((option: Option) => (
-                                                    <li key={option.id}>{option.value}</li>
-                                                ))}
-                                            </ul>
-                                        </div>
-                                    ))}
-                                </Card>
-                            </Col>
-                        ))}
+                        <PollList polls={polls} view={view} onPollSelect={setSelectedPoll} onClosePoll={closePoll}/>
                     </Row>
                 </Content>
             </Layout>

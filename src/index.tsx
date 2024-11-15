@@ -3,16 +3,19 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import LoginPage from './pages/LoginPage';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom';
 import About from './components/About';
 import RegisterPage from './pages/RegisterPage';
-import Home from './components/Home';
 import AdminPage from './pages/AdminPage';
 import AuthGuard from './components/Authguard';
+import LandingPage from './pages/LandingPage';
+import UserPage from './pages/UserPage';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
+
+const isAuthenticated = localStorage.getItem("isAuthenticated");
 
 const appRouter = createBrowserRouter([
   {
@@ -21,7 +24,9 @@ const appRouter = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <LoginPage />
+        element: (
+          isAuthenticated ? <Navigate to={LandingPage()} /> : <LoginPage />
+        )
       },
       {
         path: "/about",
@@ -40,8 +45,8 @@ const appRouter = createBrowserRouter([
         )
       },
       {
-        path: "/home",
-        element: <Home />
+        path: "/user",
+        element: <UserPage />
       }
     ]
   }
@@ -49,7 +54,3 @@ const appRouter = createBrowserRouter([
 
 root.render(<RouterProvider router={appRouter} />)
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();

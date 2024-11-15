@@ -26,7 +26,7 @@ const LoginForm: React.FC = () => {
             if (user.role === 'admin') {
                 navigate('/admin');
             } else {
-                navigate('/home');
+                navigate('/user');
             }
         } else {
             message.error('Invalid credentials. Please try again.');
