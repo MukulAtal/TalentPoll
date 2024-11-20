@@ -24,11 +24,37 @@ const UserPage: React.FC = () => {
         setCollapsed(!collapsed);
     };
 
+    // const handlePollSubmit = (answers: { [key: number]: number }) => {
+    //     localStorage.setItem(`poll_results_${selectedPoll?.id}`, JSON.stringify(answers));
+    //     message.success('Poll submitted successfully.');
+    //     setSelectedPoll(null);
+    // };
     const handlePollSubmit = (answers: { [key: number]: number }) => {
-        localStorage.setItem(`poll_results_${selectedPoll?.id}`, JSON.stringify(answers));
+        const existingResults = localStorage.getItem(`poll_results_${selectedPoll?.id}`);
+        let updatedResults: { [questionId: number]: { [optionId: number]: number } } = {};
+    
+        // Parse existing results if they exist
+        if (existingResults) {
+            updatedResults = JSON.parse(existingResults);
+        }
+    
+        // Merge new answers into existing results
+        for (const questionId in answers) {
+            const optionId = answers[questionId];
+            if (!updatedResults[questionId]) {
+                updatedResults[questionId] = {};
+            }
+            if (!updatedResults[questionId][optionId]) {
+                updatedResults[questionId][optionId] = 0;
+            }
+            updatedResults[questionId][optionId] += 1; // Increment count for the option
+        }
+    
+        // Save the updated results back to localStorage
+        localStorage.setItem(`poll_results_${selectedPoll?.id}`, JSON.stringify(updatedResults));
         message.success('Poll submitted successfully.');
         setSelectedPoll(null);
-    };
+    };    
 
     return (
         <Layout>

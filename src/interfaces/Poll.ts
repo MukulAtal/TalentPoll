@@ -1,7 +1,7 @@
 import Question from "./Question";
 
 interface Poll {
-    id: number;
+    id: string;
     title: string;
     questions: Question[];
     isOpen: boolean;

@@ -17,7 +17,7 @@ body {
 }
 
 .talent-poll-bg {
-  background-image: linear-gradient(82deg, rgba(16, 184, 87, .86) 0, rgba(16, 184, 87, .86) 1%, rgba(23, 183, 223, .86) 100%);
+  background-color: lightgray;
 }
 
 .flex-1 {
@@ -58,7 +58,7 @@ body {
 }
 
 .login-page-content {
-  font-size: 70px;
+  font-size: 60px;
   font-weight: bold;
   text-align: center;
   margin-bottom: 5px;
@@ -168,5 +168,5 @@ body {
 }
 
 .user-menu {
-  padding-top: 64px; /* Adjust based on header height to push icons below */
+  padding-top: 64px;
 }

@@ -20,10 +20,15 @@ const PollList: React.FC<PollListProps> = ({ polls, onPollSelect, onClosePoll, v
                                 <Button type="primary" onClick={() => onClosePoll(poll.id)}>
                                     Close Poll
                                 </Button>
-                            ) : null}
+                            ) : (role === 'admin' && view === 'active') || <Button type="primary" onClick={() => onPollSelect(poll)}>
+                                {view === 'active' ? 'Participate' : 'View Results'}
+                            </Button>
+                            }
                             bordered={false}
                             className="poll-card"
                         >
+
+
                             {poll.questions.map((question, index) => (
                                 <div key={question.id}>
                                     <Title level={5}>{`Q${index + 1}: ${question.label}`}</Title>
@@ -34,10 +39,6 @@ const PollList: React.FC<PollListProps> = ({ polls, onPollSelect, onClosePoll, v
                                     </ul>
                                 </div>
                             ))}
-                            {role === 'admin' || <Button type="primary" onClick={() => onPollSelect(poll)}>
-                                {view === 'active' ? 'Participate' : 'View Results'}
-                            </Button>
-                            }
                         </Card>
                     </Col>
                 ))}

@@ -3,7 +3,7 @@ import { Layout, Menu, Button, Form, Input, Modal, Typography, message, Row } fr
 import { PlusOutlined, MenuUnfoldOutlined, MenuFoldOutlined, FileDoneOutlined, FolderOpenOutlined } from '@ant-design/icons';
 import PollList from '../utils/PollList';
 import Question from '../interfaces/Question';
-import Poll from '../interfaces/Poll';
+import { useNavigate } from 'react-router-dom';
 
 const { Header, Sider, Content } = Layout;
 const { Title } = Typography;
@@ -14,8 +14,9 @@ const AdminPage: React.FC = () => {
     const [pollTitle, setPollTitle] = useState('');
     const [questions, setQuestions] = useState<Question[]>([]);
     const [polls, setPolls] = useState<any[]>([]);
-    const [selectedPoll, setSelectedPoll] = useState<Poll | null>(null);
     const [view, setView] = useState<'active' | 'closed'>('active');
+    const [selectedPollResults, setSelectedPollResults] = useState<any | null>(null);
+    const navigate = useNavigate();
 
     // Load polls from local storage on component mount
     useEffect(() => {
@@ -27,6 +28,13 @@ const AdminPage: React.FC = () => {
 
     const toggleCollapse = () => {
         setCollapsed(!collapsed);
+    };
+
+    const fetchPollResults = (pollId: string) => {
+        const results = localStorage.getItem(`poll_results_${pollId}`);
+        if (results) {
+            setSelectedPollResults(JSON.parse(results));
+        }
     };
 
     const showAddPollModal = () => {
@@ -77,7 +85,15 @@ const AdminPage: React.FC = () => {
         setIsModalVisible(false);
     };
 
-    const closePoll = (pollId: number) => {
+    const closeResultsModal = () => {
+        setSelectedPollResults(null);
+    };
+
+    const navigateToResults = (pollId: string) => {
+        navigate(`/poll-results/${pollId}`);
+    };
+
+    const closePoll = (pollId: string) => {
         const updatedPolls = polls.map(p => (p.id === pollId ? { ...p, isOpen: false } : p));
         setPolls(updatedPolls);
         localStorage.setItem('polls', JSON.stringify(updatedPolls));
@@ -95,7 +111,7 @@ const AdminPage: React.FC = () => {
                 >
                     {!collapsed && "Add Poll"}
                 </Button>
-                
+
                 <Menu mode="inline" theme="dark" defaultSelectedKeys={['active']}>
                     <Menu.Item
                         key="active"
@@ -126,7 +142,7 @@ const AdminPage: React.FC = () => {
 
                 <Content className='talent-poll-bg' style={{ padding: '20px' }}>
                     <Row gutter={[16, 16]}>
-                        <PollList polls={polls} view={view} onPollSelect={setSelectedPoll} onClosePoll={closePoll}/>
+                        <PollList polls={polls} view={view} onPollSelect={poll => navigateToResults(poll.id)} onClosePoll={closePoll} />
                     </Row>
                 </Content>
             </Layout>

@@ -3,7 +3,6 @@ import { Button, Layout, Menu, Tooltip } from 'antd';
 import { MenuInfo } from 'rc-menu/lib/interface';
 import { useNavigate } from 'react-router-dom';
 import { LogoutOutlined } from '@ant-design/icons';
-import LandingPage from '../pages/LandingPage';
 
 const { Header } = Layout;
 
@@ -15,7 +14,7 @@ const AppHeader: React.FC = () => {
 
         switch (e.key) {
             case 'home':
-                navigate(isLoggedIn ? LandingPage() : '/');
+                navigate('/');
                 break;
             case 'about':
                 navigate('/about');
@@ -32,16 +31,18 @@ const AppHeader: React.FC = () => {
             <div className='flex center'>
                 <img alt="Talentica" className="header-logo" src="https://www.talentica.com/wp-content/uploads/2021/09/Talentica-Logo.svg" height="50" width="150" />
             </div>
-            <Menu
-                className='bg-white menu-font p-4'
-                mode="horizontal"
-                onClick={handleMenuClick}
-                items={[
-                    { key: 'home', label: 'Home' },
-                    { key: 'about', label: 'About' }
-                ]}
-            />
-            {isLoggedIn && (
+            { !isLoggedIn && (
+                <Menu
+                    className='bg-white menu-font p-4'
+                    mode="horizontal"
+                    onClick={handleMenuClick}
+                    items={[
+                        { key: 'home', label: 'Home' },
+                        { key: 'about', label: 'About' }
+                    ]}
+                />
+            )}
+            { isLoggedIn && (
                 <Tooltip title="Log out">
                     <Button
                         onClick={handleLogout}

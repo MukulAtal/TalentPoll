@@ -10,6 +10,7 @@ import AdminPage from './pages/AdminPage';
 import AuthGuard from './components/Authguard';
 import LandingPage from './pages/LandingPage';
 import UserPage from './pages/UserPage';
+import PollResults from './pages/PollResults';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -47,6 +48,10 @@ const appRouter = createBrowserRouter([
       {
         path: "/user",
         element: <UserPage />
+      },
+      {
+        path: "/poll-results/:pollId",
+        element: <PollResults />
       }
     ]
   }

@@ -11,10 +11,12 @@
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "antd": "^5.21.6",
+    "echarts-for-react": "^3.0.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.27.0",
     "react-scripts": "5.0.1",
+    "recharts": "^2.13.3",
     "typescript": "^4.9.5",
     "web-vitals": "^2.1.4"
   },
@@ -41,5 +43,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/recharts": "^1.8.29"
   }
 }
