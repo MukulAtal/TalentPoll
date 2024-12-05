@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { PieChart, Pie, Cell, Legend, Tooltip } from 'recharts';
 import { Button, Col, Row, Typography, Tooltip as AntdTooltip } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
+import { Header } from 'antd/es/layout/layout';
 
 const { Title } = Typography;
 
@@ -52,8 +53,8 @@ const PollResults: React.FC = () => {
     ];
 
     return (
-        <div style={{ padding: '20px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
+        <div>
+            <Header className='page-header pl-50'>
                 <AntdTooltip title="Back to Closed Polls">
                     <Button
                         icon={<ArrowLeftOutlined />}
@@ -62,11 +63,11 @@ const PollResults: React.FC = () => {
                         shape="circle"
                     />
                 </AntdTooltip>
-                <Title level={3} style={{ marginLeft: '20px', textAlign: 'center', flexGrow: 1 }}>
+                <Title level={3} className='page-title ml-40pc'>
                     Poll Results
                 </Title>
-            </div>
-            <Row gutter={[16, 16]} justify="center">
+            </Header>
+            <Row gutter={[16, 16]} justify="center" className='p-20'>
                 {pollResults?.map((questionResult: any, index: any) => (
                     <Col xs={24} sm={12} md={8} key={index}>
                         <Title level={4} style={{ textAlign: 'center' }}>

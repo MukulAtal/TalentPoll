@@ -102,7 +102,7 @@ body {
   width: 250px;
 }
 
-.admin-title {
+.page-title {
   display: inline;
   color: white !important;
   margin: 16px;
@@ -169,4 +169,16 @@ body {
 
 .user-menu {
   padding-top: 64px;
+}
+
+.p-20 {
+  padding: 20px;
+}
+
+.pl-50 {
+  padding-left: 50px;
+}
+
+.ml-40pc {
+  margin-left: 40%;
 }

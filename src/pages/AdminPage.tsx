@@ -137,10 +137,10 @@ const AdminPage: React.FC = () => {
                         icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
                         onClick={toggleCollapse}
                     />
-                    <Title level={3} className='admin-title'>Admin Dashboard</Title>
+                    <Title level={3} className='page-title'>Admin Dashboard</Title>
                 </Header>
 
-                <Content className='talent-poll-bg' style={{ padding: '20px' }}>
+                <Content className='talent-poll-bg p-20'>
                     <Row gutter={[16, 16]}>
                         <PollList polls={polls} view={view} onPollSelect={poll => navigateToResults(poll.id)} onClosePoll={closePoll} />
                     </Row>

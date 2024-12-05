@@ -76,9 +76,9 @@ const UserPage: React.FC = () => {
                         icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
                         onClick={toggleCollapse}
                     />
-                    <Title level={3} className='admin-title'>User Dashboard</Title>
+                    <Title level={3} className='page-title'>User Dashboard</Title>
                 </Header>
-                <Content>
+                <Content className='talent-poll-bg p-20'>
                     <Row gutter={[16, 16]}>
                         <PollList polls={polls} view="active" onPollSelect={setSelectedPoll} />
                     </Row>
